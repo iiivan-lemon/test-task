@@ -1,0 +1,57 @@
+.headerCard
+  display: flex
+  flex-direction: column
+  align-items: center
+
+  .logoAirlines
+    width: 10rem
+
+.contentCard
+  display: flex
+  flex-direction: row
+
+.timeData
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+
+  .time
+    font-size: 2rem
+
+.flightBlock
+  width: 6rem
+  display: flex
+  flex-direction: row
+  align-items: center
+
+  .flightTrack
+    border: solid 1px lightgrey
+    width: 4rem
+    height: 2px
+    background-color: lightgrey
+    border-radius: 4px
+    position: relative
+
+    .flightStops
+      bottom: 1rem
+      width: max-content
+      position: absolute
+      left: 0
+      color: lightgrey
+      font-weight: bolder
+
+.primaryBtn
+  height: 100%
+  width: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
+  background-color: orangered
+  font-weight: bolder
+
+:where(.css-dev-only-do-not-override-nnuwmp).ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover
+  background-color: #fd6f3a
+
+.subTitle
+  color: lightgrey
+  font-weight: bolder
