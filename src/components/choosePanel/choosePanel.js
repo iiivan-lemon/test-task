@@ -46,7 +46,6 @@ const choosePanel = props => {
 
 
   const getStop = (number, isChecked, onlyOne) => {
-    debugger
     if(onlyOne && isChecked){
       setCheckedList([number])
       props.filterStops([number])

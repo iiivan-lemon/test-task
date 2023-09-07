@@ -29,7 +29,6 @@ const mainPage = props => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [filterStop,setFilterStop] = React.useState([])
 	const changePayment = (previousPayment, payment) =>{
-		debugger
 		if(!data || !data.length){
 			return
 		}
@@ -37,7 +36,6 @@ const mainPage = props => {
 			if (previousPayment === payment){
 				return el
 			}
-			debugger
 			if (previousPayment !== 0) {
 				const conversion = el.price * exRate[previousPayment];
 				el.price = (Math.round((conversion / exRate[payment]) * PRECISION) / PRECISION);
@@ -50,12 +48,15 @@ const mainPage = props => {
 	}
 
 	const filterStops = (stops) => {
-		debugger
+
 				if(!stops || !stops.length){
 					setData(props.data)
 					return
 				}
-				setData(props.data.filter(el => stops.find(stop => stop === el.stops)))
+		const data = props.data.filter(el => {
+			return stops.filter(stop => stop === el.stops).length
+		})
+				setData(data)
 
 	}
 

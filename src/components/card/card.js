@@ -33,7 +33,7 @@ const card = props => {
       <div className={'flightBlock'}>
         <div className={'flightTrack'}>
           <span
-            className={'flightStops subTitle'}>{props.data.stops + ((props.data.stops === 1) ? ' пересадка' : ' пересадки')}</span>
+            className={'flightStops subTitle'}>{(props.data.stops === 0) ? 'без пересадок' : (props.data.stops + ((props.data.stops === 1) ? ' пересадка' : ' пересадки'))}</span>
         </div>
         <svg version="1.1"
              id="svg2"
