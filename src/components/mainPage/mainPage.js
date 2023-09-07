@@ -7,13 +7,17 @@ import ChoosePanel from "../choosePanel";
 
 
 const exRate = {
-	"1":90,
+	"1":80,
 	"2":100,
 	"0":1,
 };
 const PRECISION = 10_000;
 const mainPage = props => {
-	const renderCards = (data,sort) => data.sort((a,b)=> (!sortPrice) ? (a.price-b.price): b.price-a.price).map(el=>{ if(!el.payment) el['payment']='0' ; return el}).map(el => (<Card data={el}></Card>))
+	const renderCards = (data,sort) => {
+		if(!data.length){
+			return <Card data={null}></Card>
+		}
+		return data.sort((a,b)=> (!sortPrice) ? (a.price-b.price): b.price-a.price).map(el=>{ if(!el.payment) el['payment']='0' ; return el}).map(el => (<Card data={el}></Card>))}
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [sortPrice, setSortPrice] = React.useState(0)
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -22,33 +26,48 @@ const mainPage = props => {
 	// const [sortDepature, setSortDepature] = React.useState(0)
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [data,setData]= React.useState(props.data)
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [filterStop,setFilterStop] = React.useState([])
 	const changePayment = (previousPayment, payment) =>{
-		if(!props.data){
+		debugger
+		if(!data || !data.length){
 			return
 		}
 		setData(props.data.map(el=> {
 			if (previousPayment === payment){
 				return el
 			}
+			debugger
 			if (previousPayment !== 0) {
 				const conversion = el.price * exRate[previousPayment];
-				el.price = Math.round((conversion / exRate[payment]) * PRECISION) / PRECISION;
+				el.price = (Math.round((conversion / exRate[payment]) * PRECISION) / PRECISION);
 			} else if (payment !== 0) {
 				const conversion = el.price / exRate[payment];
-				el.price = Math.round((conversion / exRate[previousPayment]) * PRECISION) / PRECISION;
+				el.price = (Math.round((conversion / exRate[previousPayment]) * PRECISION) / PRECISION);
 			}
 			el['payment'] = payment
 			return el}))
 	}
+
+	const filterStops = (stops) => {
+		debugger
+				if(!stops || !stops.length){
+					setData(props.data)
+					return
+				}
+				setData(props.data.filter(el => stops.find(stop => stop === el.stops)))
+
+	}
+
 	return (
 	<div className={'page'}>
 
-		<ChoosePanel changePayment={changePayment} stops={stops}></ChoosePanel>
+		<ChoosePanel changePayment={changePayment} stops={stops} filterStops={filterStops}></ChoosePanel>
 		<div className={'subpage'}>
 			<Button type={'text'} onClick={() => {setSortPrice(+!sortPrice)}}>{'Сортировать по цене '+ ((sortPrice) ? '↑':'↓')}</Button>
 			{/*<Button type={'text'} onClick={() => {setSortDepature(+!sortDepature)}}>{'Сортировать по дате отправления '+ ((sortDepature) ? '↑':'↓')}</Button>*/}
-			<Space direction="vertical" size={16}>
-				{renderCards(props.data, sortPrice)}
+			<Space direction="vertical" size={16} className={'customSpace'}>
+				{renderCards(data, sortPrice, )}
 			</Space></div>
 </div>
 

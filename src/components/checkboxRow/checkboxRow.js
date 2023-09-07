@@ -6,10 +6,22 @@ import {Button, Checkbox} from "antd";
 const checkboxRow = props => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [stop,setStop] = React.useState(props.stops)
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	React.useEffect(()=>{
+
+		setChecked(props.checked)
+	},[props.checked])
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [checked, setChecked]  = React.useState(props.checked)
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [onlyOne, setOnlyOne] = React.useState(false)
 	return(
-	<div className={'row'}><Checkbox onClick={props.getStop(stop)}>
+	<div className={'row'}><Checkbox checked={checked} onClick={() => { setChecked(!checked); props.getStop(stop,!checked,false)}}>
 		{(!props.stops ? 'Без пересадок' :( (stop === 1) ? (stop + ' пересадка'): (stop + ' пересадки')))}
-	</Checkbox><Button type="text">только</Button></div>
+	</Checkbox>{<Button style={{ visibility: (checked)?'visible': 'hidden'}}  type="text" onClick={() => {
+		setOnlyOne(true)
+		props.getStop(stop,checked,true)
+	}}>только</Button>}</div>
 )};
 
 // todo: Unless you need to use lifecycle methods or local state,

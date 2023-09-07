@@ -14,20 +14,29 @@ import CheckboxRow from "../checkboxRow";
 const choosePanel = props => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [checkedList, setCheckedList] = React.useState([]);
-  // const checkAll = plainOptions.length === checkedList.length;
-  // const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length;
+  const checkAll = () => {
+    const stops = []
+    for (let i = 0; i < props.stops + 1; i++) {
+      stops.push(i)
+    } return (stops.length === checkedList.length)};
+  const indeterminate = checkedList.length > 0 && checkedList.length < props.stops.length;
 
   const onChange = (list) => {
     setCheckedList(list);
   };
   const onCheckAllChange = (e) => {
-    // setCheckedList(e.target.checked ? plainOptions : []);
+    const stops = []
+    for (let i = 0; i < props.stops + 1; i++) {
+      stops.push(i)
+    }
+    props.filterStops(e.target.checked ? stops : [])
+    setCheckedList(e.target.checked ? stops : []);
   };
 
-  const renderCheckboxRows = (num) => {
+  const renderCheckboxRows = (num, checkedNums) => {
     const rows = []
-    for (let i = 0; i < num+1; i++) {
-      rows.push(<CheckboxRow  getStop={getStop} stops={i} ></CheckboxRow>)
+    for (let i = 0; i < num + 1; i++) {
+      rows.push(<CheckboxRow getStop={getStop} stops={i} checked={ (new Set(checkedNums).has(i))}></CheckboxRow>)
     }
     return rows
   }
@@ -36,17 +45,35 @@ const choosePanel = props => {
   const [payment, setPayment] = React.useState('0'); // default is 'middle'
 
 
+  const getStop = (number, isChecked, onlyOne) => {
+    debugger
+    if(onlyOne && isChecked){
+      setCheckedList([number])
+      props.filterStops([number])
+      return
+    }
+    if (isChecked) {
+      props.filterStops([...new Set([...checkedList, number])])
+      setCheckedList([...new Set([...checkedList, number])])
+    } else {
+      const set = new Set(checkedList)
+      set.delete(number)
+      setCheckedList([...set])
+      props.filterStops([...set])
+    }
 
-  const getStop = (number) => {
-      setCheckedList([...new Set([...checkedList,number])])
-      debugger
+
+
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return (
 
 
     <Card title={<div className={'paymentBlock'}><span className={'titleFilter'}>ВАЛЮТА</span>
-      <Radio.Group value={payment} onChange={(e) => {     props.changePayment(payment,e.target.value); setPayment(e.target.value)}}>
+      <Radio.Group value={payment} onChange={(e) => {
+        props.changePayment(payment, e.target.value);
+        setPayment(e.target.value)
+      }}>
         <Radio.Button value="0">RUB</Radio.Button>
         <Radio.Button value="1">USD</Radio.Button>
         <Radio.Button value="2">EUR</Radio.Button>
@@ -54,11 +81,11 @@ const choosePanel = props => {
     </div>} style={{height: 'fit-content', filter: "drop-shadow(2px 4px 6px lightgrey)"}}>
       <div className={"stopsBlock"}>
         <span className={'titleFilter'}>количество пересадок</span>
-        {/*<Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>*/}
-        {/*  Все*/}
-        {/*</Checkbox>*/}
+        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll()}>
+          Все
+        </Checkbox>
 
-        {renderCheckboxRows(props.stops)}
+        {renderCheckboxRows(props.stops, checkedList)}
         {/*<CheckboxRow></CheckboxRow>*/}
       </div>
     </Card>
