@@ -1,10 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './card.sass';
-import img from "../../mocks/airlines.png";
+import TK from "../../assets/TK.png";
+import SU from "../../assets/SU.png"
+import S7 from "../../assets/S7.png"
+import BA from "../../assets/BA.svg"
 import {Button, Card} from "antd";
 
 const card = props => {
+
+  const imgData = {
+    "TK": TK,
+    "SU": SU,
+    "S7": S7,
+    "BA": BA
+  }
   return (
     <>{!props.data ? <Card title={'не найдено'} style={{display: "flex", filter: "drop-shadow(2px 4px 6px lightgrey)",     width: "42rem"}}
                       bodyStyle={{
@@ -15,7 +25,7 @@ const card = props => {
                         borderRadius: 0
                       }} headStyle={{padding: "1rem"}}>
     </Card> : <Card title={<div className={'headerCard'}>
-      <img className={'logoAirlines'} src={img}/>
+      <img className={'logoAirlines'} src={imgData[props.data?.carrier]}/>
       <Button className={'primaryBtn'}
               type="primary">Купить<span>{'за ' + props.data.price + ((+props.data?.payment === 0) ? ' ₽' : (+props.data?.payment === 1 ? ' $' : ' €'))}
 		</span></Button></div>} style={{display: "flex", filter: "drop-shadow(2px 4px 6px lightgrey)"}} bodyStyle={{

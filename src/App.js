@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import MainPage from "./components/mainPage";
-import data from './mocks/tickets.json'
+import data from './assets/tickets.json'
 function App() {
   return (
     <div className="App">
