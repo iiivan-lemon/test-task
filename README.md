@@ -1,5 +1,5 @@
 # Деплой
-[тест-проект](https://delicate-sprinkles-00f500.netlify.app/)
+[тест-проект](https://moonlit-salmiakki-f432f7.netlify.app/)
 
 ## Available Scripts
 
